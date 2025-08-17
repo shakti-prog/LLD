@@ -58,37 +58,20 @@ public class Main {
        for(Map.Entry<String,Pair> x :m1.entrySet()){
            System.out.println(x.getKey() + " " + x.getValue().total + " " + x.getValue().paymentTotal );
        }*/
-        System.out.println(Integer.numberOfLeadingZeros());
-        int n = 81;
-        List<Integer> ret = new ArrayList<>();
-        while(n > 0){
-            ret.add(n&1);
-            n = n>>1;
-        }
-
-        System.out.println(ret.size());
-        System.out.println(ret);
+       System.out.println(calculateProbs(0,1,6,10));
     }
 
-    public static Map<String,Pair> getUserWiseDetails(List<Order> orders,String status){
-     Map<String,Pair> result = new HashMap<>();
-     Order curr;
-     Pair p;
-     for(int i = 0;i<orders.size();i++){
-         curr = orders.get(i);
-         if(curr.getStatus().equals(status)){
-             if(result.containsKey(curr.getUserId())){ // handle the reccuring ones
-                 p = result.get(curr.getUserId());
-                 result.put(curr.getUserId(),new Pair( p.total+1,p.paymentTotal + curr.getPayment()));
-             }
-             else{
-                 p = new Pair(1, curr.getPayment());
-                 result.put(curr.getUserId(),p); // First time if no earlier entry
-             }
-         }
 
-     }
-     return result;
+    private static double calculateProbs(int curr,int k,int n,int maxPts){
+        if(curr >= k) {
+            if(curr <= n) return 1;
+            return 0;
+        }
+        double prob = 0;
+        for(int i = 1;i<=maxPts;i++){
+            prob += ((double)1/(double) maxPts) * calculateProbs(curr+i,k,n,maxPts);
+        }
+        return prob;
     }
 
 }
